@@ -1,8 +1,9 @@
-/**
- * 상위 클래스에서 인스턴스를 만들 수 있는 인터페이스를 제공하고, 구체적으로 어떤 인스턴스를 만들지는 하위 클래스가 정한다.
- */
 type DiscountType = "A" | "B" | "C";
 
+/**
+ * 상위 클래스에서 인스턴스를 만들 수 있는 인터페이스를 제공하고,
+ * 구체적으로 어떤 인스턴스를 만들지는 하위 클래스가 정한다.
+ */
 export abstract class ProductFactory {
   public abstract createProduct(): Product;
 
