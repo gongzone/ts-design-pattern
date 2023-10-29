@@ -1,7 +1,7 @@
 interface Builder {
-  producePartA(): void;
-  producePartB(): void;
-  producePartC(): void;
+  producePartA(): Builder;
+  producePartB(): Builder;
+  producePartC(): Builder;
 }
 
 class ConcreteBuilder1 implements Builder {
@@ -15,16 +15,19 @@ class ConcreteBuilder1 implements Builder {
     this.product = new Product1();
   }
 
-  public producePartA(): void {
+  public producePartA(): Builder {
     this.product.parts.push("PartA1");
+    return this;
   }
 
-  public producePartB(): void {
+  public producePartB(): Builder {
     this.product.parts.push("PartB1");
+    return this;
   }
 
-  public producePartC(): void {
+  public producePartC(): Builder {
     this.product.parts.push("PartC1");
+    return this;
   }
 
   public getProduct(): Product1 {
@@ -54,8 +57,6 @@ class Director {
   }
 
   public buildFullFeaturedProduct(): void {
-    this.builder.producePartA();
-    this.builder.producePartB();
-    this.builder.producePartC();
+    this.builder.producePartA().producePartB().producePartC();
   }
 }
