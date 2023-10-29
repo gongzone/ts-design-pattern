@@ -1,26 +1,85 @@
-class Prototype {
-  public primitive: any;
-  public component: object;
-  public circularReference: ComponentWithBackReference;
+export interface Cloneable<T> {
+  clone(): T;
+}
 
-  public clone(): this {
-    const clone = Object.create(this);
-
-    clone.component = Object.create(this.component);
-
-    clone.circularReference = {
-      ...this.circularReference,
-      prototype: { ...this },
-    };
-
-    return clone;
+export class ComponentPrototype implements Cloneable<ComponentPrototype> {
+  clone(): ComponentPrototype {
+    return { ...this };
   }
 }
 
-class ComponentWithBackReference {
-  public prototype;
+export class Document extends ComponentPrototype {
+  components: ComponentPrototype[] = [];
 
-  constructor(prototype: Prototype) {
-    this.prototype = prototype;
+  clone(): Document {
+    const clonedDocument = new Document();
+    clonedDocument.components = this.components.map((c) => c.clone()); // manual deep copy
+    return clonedDocument;
+  }
+
+  add(component: ComponentPrototype) {
+    this.components.push(component);
   }
 }
+
+export class Title extends ComponentPrototype {
+  constructor(public text: string) {
+    super();
+  }
+
+  setText(text: string) {
+    this.text = text;
+  }
+}
+
+export class Drawing extends ComponentPrototype {
+  constructor(public shape: "circle" | "square" | "line") {
+    super();
+  }
+
+  setShape(shape: "circle" | "square" | "line") {
+    this.shape = shape;
+  }
+}
+
+export class TextBox extends ComponentPrototype {
+  constructor(public text: string) {
+    super();
+  }
+
+  setText(text: string) {
+    this.text = text;
+  }
+}
+
+export class Link extends ComponentPrototype {
+  constructor(public text: string, public url: string) {
+    super();
+  }
+
+  setText(text: string) {
+    this.text = text;
+  }
+
+  setUrl(url: string) {
+    this.url = url;
+  }
+}
+
+const document = new Document();
+const title = new Title("Example Domain");
+const textbox = new TextBox("This domain is for use in illustrative examples");
+document.add(title);
+document.add(new Drawing("line"));
+document.add(textbox);
+document.add(new Link("example.com", "https://example.com/"));
+
+const clonedDocument = document.clone();
+
+title.setText("New title for the original document");
+textbox.setText("New textbox text for the original document");
+
+console.log("document is:");
+console.log(document);
+console.log("clonedDocument is:");
+console.log(clonedDocument);
