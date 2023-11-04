@@ -1,4 +1,4 @@
-abstract class Component {
+export abstract class Component {
   protected parent!: Component | null;
 
   public setParent(parent: Component | null) {

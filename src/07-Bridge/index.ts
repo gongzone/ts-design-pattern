@@ -1,4 +1,4 @@
-abstract class ListItemViewAbstraction {
+export abstract class ListItemViewAbstraction {
   constructor(protected contentType: ContentTypeImplementation) {}
 
   abstract getRenderedItem(): string;
