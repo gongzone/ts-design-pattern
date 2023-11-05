@@ -1,4 +1,4 @@
-class Flyweight {
+export class Flyweight {
   private sharedState: any;
 
   constructor(sharedState: any) {
